@@ -8,11 +8,13 @@ namespace WeatherReport.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
