@@ -25,6 +25,48 @@
             new google.maps.places.SearchBox(document.getElementById('txtDestination'));
             directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': false });
         });
+        
+        function getWeather() {
+
+            var endW;
+            var startW;
+            var startSTATE;
+            var endSTATE;
+
+            endW = document.getElementById('txtDestination').value;
+            startW = document.getElementById('txtSource').value;
+            //endSTATE = document.getElementById('endSTATE').value;
+            //startSTATE = document.getElementById('startSTATE').value;
+
+
+            var url = "http://api.wunderground.com/api/36b799dc821d5836/conditions/q/";
+            var urlStart = url.concat("/" + startW + ".json");
+            var urlEnd = url.concat("/" + endW + ".json");
+
+            console.log(urlStart);
+
+            $http.get(urlStart).success(function (data) {
+                console.log(data);
+                temp = data.current_observation.temp_f;
+                icon = data.current_observation.icon_url;
+                weather1 = data.current_observation.weather;
+                console.log(temp);
+                document.getElementById("conds1").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "";
+                document.getElementById("currentIcon1").innerHTML = "<img src='" + icon + "'/>" 
+
+            })
+
+            $http.get(urlEnd).success(function (data) {
+                console.log(data);
+                temp = data.current_observation.temp_f;
+                icon = data.current_observation.icon_url;
+                weather1 = data.current_observation.weather;
+                console.log(temp);
+                document.getElementById("conds2").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "" 
+                document.getElementById("currentIcon2").innerHTML = "<img src='" + icon + "'/>"
+
+            })
+        };
 
         function GetRoute() {
             var kansas_city = new google.maps.LatLng(39.114171, -94.627457);
@@ -87,11 +129,11 @@
         </div>
         <br/>
         <div class="row">
-            <p><a onclick="GetRoute()" class="btn btn-default">Get Route &raquo;</a></p>
+            <p><a onclick="GetRoute()" class="btn btn-default left-margin">Get Route &raquo;</a></p>
         </div>
         <br/>
         <div class="row">
-            <div id="dvDistance">
+            <div class="left-margin" id="dvDistance">
             </div>
         </div>
         <br />
@@ -100,7 +142,22 @@
             </div>
             <!--<div id="dvPanel" style="width: 500px; height: 500px">
         </div>-->
-
+        <div>
+            <button id="btn" onclick="getWeather()">
+                Show Weather
+            </button>
+            <br /><br /><br />
+            <div class="weatherDash">
+                <p class="currentConditions" id="conds1"></p>
+                <div class="currentIcon" id="currentIcon1"></div>
+            </div>
+            <br /><br /><br />
+            <div class="weatherDash">
+                <p class="currentConditions" id="conds2"></p>
+                <div class="currentIcon" id="currentIcon2"></div>
+            </div>
+        </div>
+        
         
     </body>
 </html>
