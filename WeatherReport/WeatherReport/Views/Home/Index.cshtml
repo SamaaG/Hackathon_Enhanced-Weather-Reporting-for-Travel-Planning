@@ -2,7 +2,6 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="">
     <h1>Weather Report</h1>
     <br />
     <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +27,7 @@
         });
 
         function GetRoute() {
-            var kansas_city = new google.maps.LatLng(39.0997, 94.5783);
+            var kansas_city = new google.maps.LatLng(39.114171, -94.627457);
             var mapOptions = {
                 zoom: 7,
                 center: kansas_city
@@ -76,44 +75,34 @@
             });
         }
         </script>
-        <table border="0" cellpadding="0" cellspacing="3">
-            <tr>
-                <td colspan="2">
-                    Source:
-                    <input type="text" id="txtSource" value="Kansas City, MO, USA" style="width: 300px" />
-                    &nbsp; Destination:
-                    <input type="text" id="txtDestination" value="St. Louis, MO, USA" style="width: 300px" />
-                    <br />
-                    <br />
-                    <p><a onclick="GetRoute()" class="btn btn-primary btn-lg">Get Route &raquo;</a></p>
-                    <hr />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div id="dvDistance">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="dvMap" style="width: 1000px; height: 800px">
-                    </div>
-                </td>
-                <td>
-                    <!--<div id="dvPanel" style="width: 500px; height: 500px">
-                    </div>-->
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="txtSource" class="control-label">* Source:</label>
+                    <input type="text" class="form-control" id="txtSource" placeholder="Kansas City, MO, USA" required />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="txtDestination" class="control-label">* Destination:</label>
+                    <input type="text" class="form-control" id="txtDestination" placeholder="St. Louis, MO, USA" required />
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <p><a onclick="GetRoute()" class="btn btn-default">Get Route &raquo;</a></p>
+        </div>
+        <br/>
+        <div class="row">
+            <div id="dvDistance">
+            </div>
+        </div>
         <br />
+        <div class="row">
+            <div id="dvMap"></div>
+            </div>
+            <!--<div id="dvPanel" style="width: 500px; height: 500px">
+        </div>-->
+
+        
     </body>
 </html>
 
-
-</div>
-
-<div class="row">
-    
-</div>
 
