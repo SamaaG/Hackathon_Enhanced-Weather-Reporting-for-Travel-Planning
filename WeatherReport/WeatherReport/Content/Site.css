@@ -99,3 +99,21 @@ textarea {
     background-color: #9ad1d4;
   }
 }
+
+.weatherDash {
+    background-color: snow;
+    height:250px;
+    width:150px;
+    border: 1px dashed #ccc;
+    
+}
+
+.currentConditions {
+    float: left;
+}
+
+.currentIcon {
+    float: left;
+    margin: 0 .75em;
+}
+
