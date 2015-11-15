@@ -3,8 +3,10 @@
     <h1>Weather Report</h1>
     <br />
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places,geometry"></script>
-        <script type="text/javascript">
-    var source, destination,weatherPoints=[], weatherInfo=[];
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/maplabel/src/maplabel.js"></script>
+<script type="text/javascript">
+            var source, destination, weatherPoints = [], weatherInfo = [];
+            var map;
     var directionsDisplay;
     var directionsService = new google.maps.DirectionsService();
     google.maps.event.addDomListener(window, 'load', function () {
@@ -51,6 +53,7 @@
     function insertWeather() {
         console.log(weatherInfo.length + " " + weatherPoints.length);
         //console.log(weatherInfo);
+        //addMarker(latlngs[20]);
         if (weatherInfo.length == weatherPoints.length) {
             document.getElementById("weatherRows").innerHTML = "";
             for (var p = 0; p < weatherInfo.length; p++)
@@ -65,7 +68,7 @@
         console.log("NumberOfPts", weatherPoints.length);
         for (var p = 0; p < weatherPoints.length; p++) {
             console.log('Calling Get '+p);
-            httpGet(weatherPoints[p]);
+            httpGet(weatherPoints[p].lat() + "," + weatherPoints[p].lng());
         }
 
         
@@ -99,6 +102,23 @@
         //})
     };
 
+    function addMarker(location,t) {
+        //marker = new google.maps.Marker({
+        //    position: location,
+        //    map: map
+        //});
+        var mapLabel = new MapLabel({
+            text: t,
+            position: location,
+            map: map,
+            fontSize: 20,
+            strokeWeight: 1,
+            fontColor: 'red',
+            strokeColor: '#000',
+            align: 'right'
+        });
+    }
+    
     function GetRoute() {
         weatherPoints = [];
         var kansas_city = new google.maps.LatLng(39.114171, -94.627457);
@@ -109,7 +129,7 @@
         var latlngs = [];
         var distance;
         var ok = [false, false];
-        var map = new google.maps.Map(document.getElementById('dvMap'), mapOptions);
+        map = new google.maps.Map(document.getElementById('dvMap'), mapOptions);
         directionsDisplay.setMap(map);
         directionsDisplay.setPanel(document.getElementById('dvPanel'));
 
@@ -127,15 +147,13 @@
 
                 directionsDisplay.setDirections(response);
                 
-                var points = google.maps.geometry.encoding.decodePath(response.routes[0].overview_polyline);
-                
-                for (i = 0; i < points.length; i++) {
-                    latlngs[i] = { lat: points[i].lat(), lng: points[i].lng() };
-                }
+                latlngs = google.maps.geometry.encoding.decodePath(response.routes[0].overview_polyline);
                 console.log("Geolocations Ready!");
                 ok[0] = true;
-                if (ok[1] == true)
+                if (ok[1] == true) {
                     getSteps(distance, latlngs);
+                    getWeather();
+                }
             }
         });
 
@@ -159,9 +177,11 @@
                 dvDistance.innerHTML += "Duration:" + duration;
                 console.log("Distance Ready!");
                 ok[1] = true;
-                if (ok[0] == true)
+                if (ok[0] == true) {
                     getSteps(distance, latlngs);
-
+                    addMarker(latlngs[20]);
+                    getWeather();
+                }
             } else {
                 alert("Unable to find the distance via road.");
             }
@@ -207,8 +227,7 @@
         weatherPoints = [];
 
         for (var k = 0; k < steps.length; k++) {
-            //console.log(k, latlngs[steps[k]].lat + "," + latlngs[steps[k]].lng);
-            weatherPoints[k] = latlngs[steps[k]].lat + "," + latlngs[steps[k]].lng;
+            weatherPoints[k] = latlngs[steps[k]];
         }
     }
         </script>
@@ -236,12 +255,13 @@
             <div id="dvMap"></div>
             </div>
             <!--<div id="dvPanel" style="width: 500px; height: 500px">
-            </div>-->
+            </div>
         <div class="row">
             <button id="btn" onclick="getWeather()">
                 Show Weather
             </button>
        </div>
+                -->
             <br /><br /><br />
         <div class="row row-horizon" id="weatherRows">
 
