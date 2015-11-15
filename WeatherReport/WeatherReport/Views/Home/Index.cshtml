@@ -1,6 +1,4 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿
 
     <h1>Weather Report</h1>
     <br />
@@ -15,6 +13,35 @@
         directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': false });
 
     });
+
+    function httpGet(urlStart) {
+        startW = document.getElementById('txtSource').value;
+        var url = "http://api.wunderground.com/api/36b799dc821d5836/conditions/q/";
+        var urlStart = url.concat(startW + ".json");
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = ProcessRequest;
+        xmlHttp.open("GET", urlStart, true);
+        xmlHttp.send(null);
+    }
+
+    function ProcessRequest() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            if (xmlHttp.responseText == "Not found") {
+            }
+            else {
+
+                var data = eval("(" + xmlHttp.responseText + ")");
+
+                temp = data.current_observation.temp_f;
+                icon = data.current_observation.icon_url;
+                weather1 = data.current_observation.weather;
+
+                document.getElementById("conds1").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "";
+                document.getElementById("currentIcon1").innerHTML = "<img src='" + icon + "'/>"
+            }
+        }
+    }
 
     function getWeather() {
 
@@ -32,30 +59,36 @@
         var url = "http://api.wunderground.com/api/36b799dc821d5836/conditions/q/";
         var urlStart = url.concat(startW + ".json");
         var urlEnd = url.concat(endW + ".json");
-
+        httpGet(urlStart);
         console.log(urlStart);
 
-        $http.get(urlStart).success(function (data) {
-            console.log(data);
-            temp = data.current_observation.temp_f;
-            icon = data.current_observation.icon_url;
-            weather1 = data.current_observation.weather;
-            console.log(temp);
-            document.getElementById("conds1").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "";
-            document.getElementById("currentIcon1").innerHTML = "<img src='" + icon + "'/>"
+        //$http.get(urlStart).success(function (data) {
+        //    console.log(data);
+        //    temp = data.current_observation.temp_f;
+        //    icon = data.current_observation.icon_url;
+        //    weather1 = data.current_observation.weather;
+        //    console.log(temp);
+        //    document.getElementById("conds1").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "";
+        //    document.getElementById("currentIcon1").innerHTML = "<img src='" + icon + "'/>"
 
-        })
+        //})
+        //function httpGet(urlStart) {
+        //    var xmlHttp = new XMLHttpRequest();
+        //    xmlHttp.open("GET", urlStart, false); // false for synchronous request
+        //    xmlHttp.send(null);
+        //    return xmlHttp.responseText;
+        //}
 
-        $http.get(urlEnd).success(function (data) {
-            console.log(data);
-            temp = data.current_observation.temp_f;
-            icon = data.current_observation.icon_url;
-            weather1 = data.current_observation.weather;
-            console.log(temp);
-            document.getElementById("conds2").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + ""
-            document.getElementById("currentIcon2").innerHTML = "<img src='" + icon + "'/>"
+        //$http.get(urlEnd).success(function (data) {
+        //    console.log(data);
+        //    temp = data.current_observation.temp_f;
+        //    icon = data.current_observation.icon_url;
+        //    weather1 = data.current_observation.weather;
+        //    console.log(temp);
+        //    document.getElementById("conds2").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + ""
+        //    document.getElementById("currentIcon2").innerHTML = "<img src='" + icon + "'/>"
 
-        })
+        //})
     };
 
     function GetRoute() {
