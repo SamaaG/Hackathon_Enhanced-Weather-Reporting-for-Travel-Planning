@@ -30,10 +30,11 @@ textarea {
 }
 
 #dvMap{
-     margin-left: 40px;
-    margin-right: 40px;
-     width: inherit;
-     height: 250px;
+     width: 560px;
+     height: 350px;
+}
+.hight{
+    height: 350px;
 }
 
 .left-margin{
@@ -102,18 +103,15 @@ textarea {
 
 .weatherDash {
     background-color: snow;
-    height:250px;
-    width:150px;
+    height:70px;
+    width:260px;
     border: 1px dashed #ccc;
     
 }
 
-.currentConditions {
-    float: left;
+.scrollable-div{
+    width: 260px;
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
-
-.currentIcon {
-    float: left;
-    margin: 0 .75em;
-}
-
