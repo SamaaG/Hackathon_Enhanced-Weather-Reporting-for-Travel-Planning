@@ -10,7 +10,7 @@ google.maps.event.addDomListener(window, 'load', function () {
     directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': false });
 
 });
-
+//Function to Get Weather using api.wunderground.com
 function httpGetWeather(startW) {
     //startW = document.getElementById('txtSource').value;
     var url = "http://api.wunderground.com/api/36b799dc821d5836/conditions/q/";
@@ -27,7 +27,7 @@ function ProcessRequestWeather() {
         if (xmlHttp.responseText == "Not found") {
         }
         else {
-
+            //Assign requested weather to variables
             var data = eval("(" + xmlHttp.responseText + ")");
 
             var temp = data.current_observation.temp_f;
@@ -40,6 +40,7 @@ function ProcessRequestWeather() {
             labelIndex++;
             //console.log("Calling ProcessRequest Lat: " + lat + "Lng:" + lng);
             //console.log(data);
+            //Push the gathered weather variables
             weatherInfo.push({ t: temp, loc: location, w: weather1, ic: icon, lt: lat, ln: lng });
             insertWeather();
         }
@@ -50,6 +51,7 @@ function insertWeather() {
     //console.log(weatherInfo.length + " " + weatherPoints.length);
     //console.log(weatherInfo);
     //addMarker(latlngs[20]);
+    //Add the requested weather to the form
     if (weatherInfo.length == weatherPoints.length) {
         var wc = document.getElementById("weatherRows");
         wc.innerHTML = "";
@@ -64,7 +66,7 @@ function insertWeather() {
 }
 
 function getWeather() {
-
+    //Determine weather points
     weatherInfo = [];
     weatherLabels = {};
     labelIndex = 0;
@@ -77,7 +79,8 @@ function getWeather() {
     
 }
 
-function getEvents(latlng,loc) {
+function getEvents(latlng, loc) {
+    //Use foursquare api to gather popular locations
     console.log("The LOCATION " + latlng+" "+loc);
     var url = "https://api.foursquare.com/v2/venues/search?categoryId=4d4b7104d754a06370d81259&client_id=ZLNCVVDMUTSIAICKT103POACTFZMR4COUZMCMB4UUN5MYA3X&client_secret=SCRJ41NA15ZHMBPSEMB115J3SBV33QTBTMUQ25CZJOBWEBKH&v=20130815&ll="+latlng;
     xmlHttp = new XMLHttpRequest();
@@ -93,6 +96,7 @@ function ProcessRequestEvent(loc) {
 
             var data = eval("(" + xmlHttp.responseText + ")");
             //console.log(data);
+            //Add event to the screen
             insertEvents(loc, data.response.venues);
 
         }
@@ -100,7 +104,7 @@ function ProcessRequestEvent(loc) {
 }
 
 function insertEvents(loc,events) {
-
+    //Define grid and then populate
     var er = document.getElementById("eventCols");
     
     var eventList = '<div class="row eventDash">' + '<h5 style="font-weight:900">' + loc + '</h5>' + '</div>';
@@ -116,7 +120,7 @@ function insertEvents(loc,events) {
 
 }
 function populateEvents() {
-
+    //Populate the foursquare popular events
     var er = document.getElementById("eventCols");
     er.innerHTML = "";
     console.log("Size: "+weatherInfo.length);

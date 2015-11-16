@@ -1,17 +1,21 @@
 ﻿
     <h1>Weather Report</h1>
     <br />
+<!--Define the page layout-->
     <div class="row">
+        <!--Default the Source textbox to Kansas City, MO, USA-->
         <div class="form-group col-md-6">
             <label for="txtSource" class="control-label">* Source:</label>
             <input type="text" class="form-control" id="txtSource" placeholder="Kansas City, MO, USA" required />
         </div>
+        <!--Default the Destination textbox to St. Louis, MO, USA-->
         <div class="form-group col-md-6">
             <label for="txtDestination" class="control-label">* Destination:</label>
             <input type="text" class="form-control" id="txtDestination" placeholder="St. Louis, MO, USA" required />
         </div>
     </div>
     <br />
+<!--Call the GetRoute function when the button is selected-->
     <div class="row">
         <p><a onclick="GetRoute()" class="btn btn-default left-margin">Get Route &raquo;</a></p>
     </div>
