@@ -11,18 +11,18 @@ google.maps.event.addDomListener(window, 'load', function () {
 
 });
 
-function httpGet(startW) {
+function httpGetWeather(startW) {
     //startW = document.getElementById('txtSource').value;
     var url = "http://api.wunderground.com/api/36b799dc821d5836/conditions/q/";
     var urlStart = url.concat(startW + ".json");
 
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = ProcessRequest;
+    xmlHttp.onreadystatechange = ProcessRequestWeather;
     xmlHttp.open("GET", urlStart, false);
     xmlHttp.send(null);
 }
 
-function ProcessRequest() {
+function ProcessRequestWeather() {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         if (xmlHttp.responseText == "Not found") {
         }
@@ -51,14 +51,16 @@ function insertWeather() {
     //console.log(weatherInfo);
     //addMarker(latlngs[20]);
     if (weatherInfo.length == weatherPoints.length) {
-        document.getElementById("weatherRows").innerHTML = "";
+        var wc = document.getElementById("weatherRows");
+        wc.innerHTML = "";
         for (var p = 0; p < weatherInfo.length; p++) {
-            document.getElementById("weatherRows").innerHTML += '<div class="row weatherDash">' + '<div class="col-xs-1 currentIcon" >' + '<img src="' + weatherInfo[p].ic + '"/>' + '</div>' + '<div class="col-md-offset-4 currentConditions">' + weatherInfo[p].loc + "<br/>Currently " + weatherInfo[p].t + " &deg; F<br/>" + weatherInfo[p].w + '</div>' + '</div>';
+            wc.innerHTML += '<div class="row weatherDash">' + '<div class="col-xs-1 currentIcon" >' + '<img src="' + weatherInfo[p].ic + '"/>' + '</div>' + '<div class="col-md-offset-4 currentConditions">' + weatherInfo[p].loc + "<br/>Currently " + weatherInfo[p].t + " &deg; F<br/>" + weatherInfo[p].w + '</div>' + '</div>';
             addMarker(weatherLabels[p].latlng, weatherLabels[p].label);
+            
         }
-
-
+        populateEvents();
     }
+    
 }
 
 function getWeather() {
@@ -70,40 +72,59 @@ function getWeather() {
     for (var p = 0; p < weatherPoints.length; p++) {
         //console.log('Calling Get '+p);
         weatherLabels[p] = { latlng: weatherPoints[p] };
-        httpGet(weatherPoints[p].lat() + "," + weatherPoints[p].lng());
+        httpGetWeather(weatherPoints[p].lat() + "," + weatherPoints[p].lng());
+    }
+    
+}
+
+function getEvents(latlng,loc) {
+    console.log("The LOCATION " + latlng+" "+loc);
+    var url = "https://api.foursquare.com/v2/venues/search?categoryId=4d4b7104d754a06370d81259&client_id=ZLNCVVDMUTSIAICKT103POACTFZMR4COUZMCMB4UUN5MYA3X&client_secret=SCRJ41NA15ZHMBPSEMB115J3SBV33QTBTMUQ25CZJOBWEBKH&v=20130815&ll="+latlng;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () { ProcessRequestEvent(loc);};
+    xmlHttp.open("GET", url, false);
+    xmlHttp.send(null); 
+}
+function ProcessRequestEvent(loc) {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        if (xmlHttp.responseText == "Not found") {
+        }
+        else {
+
+            var data = eval("(" + xmlHttp.responseText + ")");
+            //console.log(data);
+            insertEvents(loc, data.response.venues);
+
+        }
+    }
+}
+
+function insertEvents(loc,events) {
+
+    var er = document.getElementById("eventCols");
+    
+    var eventList = '<div class="row eventDash">' + '<h5 style="font-weight:900">' + loc + '</h5>' + '</div>';
+    for (var e = 0; e < events.length; e++) {
+        if (typeof events[e].contact.formattedPhone != 'undefined')
+            ph = events[e].contact.formattedPhone;
+        else
+            ph = '';
+            
+        eventList += '<div class="row eventDash">' + '<div>' + events[e].name + '<br/>' + ph + '</div>' + '</div>';
+        }
+        er.innerHTML += '<div class="col-md-3 eventsDash">' + eventList + '</div>';
+
+}
+function populateEvents() {
+
+    var er = document.getElementById("eventCols");
+    er.innerHTML = "";
+    console.log("Size: "+weatherInfo.length);
+    for (var p = 0; p < weatherInfo.length; p++) {
+        getEvents(weatherInfo[p].lt + "," + weatherInfo[p].ln, weatherInfo[p].loc);
 
     }
-
-
-
-    //$http.get(urlStart).success(function (data) {
-    //    console.log(data);
-    //    temp = data.current_observation.temp_f;
-    //    icon = data.current_observation.icon_url;
-    //    weather1 = data.current_observation.weather;
-    //    console.log(temp);
-    //    document.getElementById("conds1").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + "";
-    //    document.getElementById("currentIcon1").innerHTML = "<img src='" + icon + "'/>"
-
-    //})
-    //function httpGet(urlStart) {
-    //    var xmlHttp = new XMLHttpRequest();
-    //    xmlHttp.open("GET", urlStart, false); // false for synchronous request
-    //    xmlHttp.send(null);
-    //    return xmlHttp.responseText;
-    //}
-
-    //$http.get(urlEnd).success(function (data) {
-    //    console.log(data);
-    //    temp = data.current_observation.temp_f;
-    //    icon = data.current_observation.icon_url;
-    //    weather1 = data.current_observation.weather;
-    //    console.log(temp);
-    //    document.getElementById("conds2").innerHTML = "Currently " + temp + " &deg; F and " + weather1 + ""
-    //    document.getElementById("currentIcon2").innerHTML = "<img src='" + icon + "'/>"
-
-    //})
-};
+}
 
 function addMarker(location, t) {
     //marker = new google.maps.Marker({
@@ -116,7 +137,7 @@ function addMarker(location, t) {
         map: map,
         fontSize: 16,
         strokeWeight: 4,
-        fontColor: '#5ba0ab',
+        fontColor: '#366D80',
         strokeColor: 'white',
         align: 'right'
     });

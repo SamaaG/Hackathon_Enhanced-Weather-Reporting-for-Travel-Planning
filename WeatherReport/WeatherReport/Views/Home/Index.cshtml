@@ -1,35 +1,35 @@
 ﻿
     <h1>Weather Report</h1>
     <br />
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="txtSource" class="control-label">* Source:</label>
-                    <input type="text" class="form-control" id="txtSource" placeholder="Kansas City, MO, USA" required />
-            </div>
-            <div class="form-group col-md-6">
-                <label for="txtDestination" class="control-label">* Destination:</label>
-                    <input type="text" class="form-control" id="txtDestination" placeholder="St. Louis, MO, USA" required />
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="txtSource" class="control-label">* Source:</label>
+            <input type="text" class="form-control" id="txtSource" placeholder="Kansas City, MO, USA" required />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="txtDestination" class="control-label">* Destination:</label>
+            <input type="text" class="form-control" id="txtDestination" placeholder="St. Louis, MO, USA" required />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <p><a onclick="GetRoute()" class="btn btn-default left-margin">Get Route &raquo;</a></p>
+    </div>
+    <br />
+    <div class="row">
+        <div class="left-margin" id="dvDistance">
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8">
+            <div id="dvMap"></div>
+        </div>
+        <div class="col-md-2">
+            <div class="row scrollable-div" id="weatherRows">
             </div>
         </div>
-        <br/>
-        <div class="row">
-            <p><a onclick="GetRoute()" class="btn btn-default left-margin">Get Route &raquo;</a></p>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="left-margin" id="dvDistance">
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-md-8">
-                <div id="dvMap"></div>
-            </div>
-            <div class="col-md-2">
-                <div class="row scrollable-div" id="weatherRows">
-                </div>
-            </div>
-            <br /><br /><br />
-        
-
-</div>
+    </div>
+    <br />
+    <div class="row row-horizon" id="eventCols">
+    </div>

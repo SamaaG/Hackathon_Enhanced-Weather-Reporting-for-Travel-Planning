@@ -109,6 +109,24 @@ textarea {
     
 }
 
+.eventsDash {
+    background-color: snow;
+    height:300px;
+    width:300px;
+    border: 1px dashed #ccc;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.eventDash{
+    background-color: snow;
+    height:40px;
+    width:190px;
+    border: 1px dashed #ccc;
+    overflow: hidden;
+}
+
+
 .scrollable-div{
     width: 260px;
     height: 350px;
